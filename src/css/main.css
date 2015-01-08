@@ -1,0 +1,25 @@
+#navpages{
+    width: 20%;
+    padding: 10px;
+    height: 100%;
+    overflow: scroll;
+    float: left;
+
+}
+#navpages img{
+    width: 100%;
+    height: auto;
+    margin: 5px;
+
+}
+#targetpage{
+    float: left;
+    width: 77%;
+}
+#targetpage img{
+    height: 100%;
+    width: 100%;
+}
+body{
+    margin: 0;
+    padding: 0;
