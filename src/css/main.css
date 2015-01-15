@@ -1,3 +1,10 @@
+#navactions button img{
+    display: inline-block;
+    vertical-align: middle;
+    height: 25px;
+    width: auto;
+}
+
 #navsections{
     width: 20%;
     padding: 10px;
@@ -10,7 +17,7 @@
     width: 100%;
     height: auto;
     margin: 5px;
-
+    border: 1px solid black;
 }
 #targetcontent{
     float: left;
