@@ -16,11 +16,33 @@ function createNameSpace(nameSpaceString) {
 
 
 function Core() {
+  this.coche = "5";
   createNameSpace('Project');
   createNameSpace('Project.Actions');
 }
 
-function calcule_button_content(pluginpath, infobutton) {
+
+Core.prototype.load_components = function load_components() {
+  var that = this;
+  var fs = require('fs');
+  var sections = fs.readdirSync('components');
+  sections.forEach(function (section) {
+    var actions = fs.readdirSync('components/' + section);
+    actions.forEach(function (action) {
+      var auxnamespace = 'Project.Actions.' + section + '.' + action;
+      var componentpath = './components/' + section + '/' + action + '/';
+      createNameSpace(auxnamespace);
+      Project.Actions[section][action] = require('./components/' + section + '/' + action + '/' + 'core.js');
+      var description = require( componentpath + 'metadata.json');
+      $('#navactions').append($(document.createElement('button'))
+        .bind('click', function () {Project.Actions[section][action].add(load_element); })
+        .html(that.calcule_button_content(componentpath, description)));
+    });
+  });
+};
+
+
+Core.prototype.calcule_button_content = function calcule_button_content(pluginpath, infobutton) {
   var result = "";
   var fs = require('fs');
   if (infobutton.hasOwnProperty('icon')) {
@@ -34,26 +56,6 @@ function calcule_button_content(pluginpath, infobutton) {
   }
   return result;
 };
-
-Core.prototype.load_components = function load_components() {
-  var fs = require('fs');
-  var sections = fs.readdirSync('components');
-  sections.forEach(function (section) {
-    var actions = fs.readdirSync('components/' + section);
-    actions.forEach(function (action) {
-      var auxnamespace = 'Project.Actions.' + section + '.' + action;
-      var componentpath = './components/' + section + '/' + action + '/';
-      createNameSpace(auxnamespace);
-      Project.Actions[section][action] = require('./components/' + section + '/' + action + '/' + 'core.js');
-      var description = require( componentpath + 'metadata.json');
-      $('#navactions').append($(document.createElement('button'))
-        .bind('click', function () {Project.Actions[section][action].add(load_element); })
-        .html(calcule_button_content(componentpath, description)));
-    });
-  });
-};
-
-
 
 
 $(document).ready(function () {
