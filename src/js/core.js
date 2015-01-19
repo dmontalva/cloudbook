@@ -40,8 +40,8 @@ Core.prototype.load_components = function load_components() {
           var representacion = objeto.editorView();
           representacion.addClass('draggable').css('position','relative');
           $(Project.UI.targetcontent).append(representacion);
-          load_element();
-          Project.UI.Data.Sections[Project.UI.selected.attr('id')].push(objeto);
+          load_element(objeto);
+          Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].push(objeto);
         })
         .html(that.calcule_button_content(componentpath, description)));
     });
@@ -85,20 +85,18 @@ Core.prototype.add_section = function add_section() {
 };
 
 function load_content(thumbnail) {
-  // Save content on Project.UI.Data.Sections
-  //
+
   if (Project.UI.selected !== undefined){
-    Project.UI.Data.Sections[Project.UI.selected.attr('id')] = $(Project.UI.targetcontent).html();
-     Project.UI.selected.removeClass('sectionselected');
-  }
+    Project.UI.selected.removeClass('sectionselected');
+  } 
   // Load content into targetcontent
-  
+  $(Project.UI.targetcontent).html("");
   Project.UI.selected = $(thumbnail);
-  if (Project.UI.Data.Sections[Project.UI.selected.attr('id')] !== undefined ){
-    $(Project.UI.targetcontent).html(Project.UI.Data.Sections[$(thumbnail).attr('id')]);
-  }
-  else{
-    $(Project.UI.targetcontent).html("");
+  if (Project.UI.Data.Sections[Project.UI.selected.attr('id')-1] !== undefined ){
+    Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].forEach(function (element){
+      $(Project.UI.targetcontent).append(element.editorView().addClass('draggable').css('position','relative'));
+    });
+    
   }
   $(thumbnail).addClass('sectionselected');
 
