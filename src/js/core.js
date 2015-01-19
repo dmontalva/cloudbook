@@ -68,19 +68,34 @@ Core.prototype.load_sections = function load_sections() {
 };
 
 Core.prototype.add_section = function add_section() {
-  var that = this;
   var section = {};
   Project.UI.Data.Sections.push(section);
   var section_thumbnail = $(document.createElement('img'))
                             .attr('src', 'img/white.png')
                             .attr('id', Project.UI.Data.Sections.length)
                             .bind('click', function () {load_content(this); });
-  $("#navsections").append(section_thumbnail);
+  $(this).before(section_thumbnail);
 };
 
 function load_content(thumbnail) {
-  console.log($(thumbnail).attr('id'));
-};
+  // Save content on Project.UI.Data.Sections
+  //
+  if (Project.UI.selected !== undefined){
+    Project.UI.Data.Sections[Project.UI.selected.attr('id')] = $(Project.UI.targetcontent).html();
+     Project.UI.selected.removeClass('sectionselected');
+  }
+  // Load content into targetcontent
+  
+  Project.UI.selected = $(thumbnail);
+  if (Project.UI.Data.Sections[Project.UI.selected.attr('id')] !== undefined ){
+    $(Project.UI.targetcontent).html(Project.UI.Data.Sections[$(thumbnail).attr('id')]);
+  }
+  else{
+    $(Project.UI.targetcontent).html("");
+  }
+  $(thumbnail).addClass('sectionselected');
+
+}
 
 
 $(document).ready(function () {

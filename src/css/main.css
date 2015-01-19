@@ -19,6 +19,10 @@
     margin: 5px;
     border: 1px solid black;
 }
+
+#navsections img.sectionselected{
+    border: 3px solid red;
+}
 #targetcontent{
     float: left;
     width: 77%;

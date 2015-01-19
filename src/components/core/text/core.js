@@ -13,5 +13,5 @@ exports.add = function add(callback) {
     $(this).css('display', 'inline-block');
   });
   $(Project.UI.targetcontent).append(aux);
-  callback();
+  callback(aux);
 };
