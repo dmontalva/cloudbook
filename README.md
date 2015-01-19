@@ -13,3 +13,11 @@ git clone https://github.com/raurodse/cloudbook.git
 cd cloudbook/src/
 npm install
 ```
+
+## Launch ##
+
+Command nw is node-webkit launcher.
+
+```sh
+nw cloudbook/src
+```
