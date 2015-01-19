@@ -2,7 +2,7 @@ var fs = require("fs");
 
 function load_element(){
             $(function() {
-                $( ".draggable" ).draggable();
+                $( ".draggable" ).draggable({stop: function (event,ui){console.log(ui)}});
             });
 }
 

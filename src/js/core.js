@@ -16,7 +16,6 @@ function createNameSpace(nameSpaceString) {
 
 
 function Core() {
-  this.coche = "5";
   createNameSpace('Project');
   createNameSpace('Project.Actions');
 }
@@ -35,7 +34,15 @@ Core.prototype.load_components = function load_components() {
       Project.Actions[section][action] = require('./components/' + section + '/' + action + '/' + 'core.js');
       var description = require(componentpath + 'metadata.json');
       $('#navactions').append($(document.createElement('button'))
-        .bind('click', function () {Project.Actions[section][action].add(load_element); })
+        //.bind('click', function () {Project.Actions[section][action].add(load_element); })
+        .bind('click', function () {
+          var objeto = Project.Actions[section][action].add();
+          var representacion = objeto.editorView();
+          representacion.addClass('draggable').css('position','relative');
+          $(Project.UI.targetcontent).append(representacion);
+          load_element();
+          Project.UI.Data.Sections[Project.UI.selected.attr('id')].push(objeto);
+        })
         .html(that.calcule_button_content(componentpath, description)));
     });
   });
@@ -68,7 +75,7 @@ Core.prototype.load_sections = function load_sections() {
 };
 
 Core.prototype.add_section = function add_section() {
-  var section = {};
+  var section = [];
   Project.UI.Data.Sections.push(section);
   var section_thumbnail = $(document.createElement('img'))
                             .attr('src', 'img/white.png')
