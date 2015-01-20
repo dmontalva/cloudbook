@@ -4,7 +4,7 @@ var $ = require('jquery');
 
 function TextBox(){
   this.position = [100,100];
-  this.text = "Cosita mona";
+  this.text = "Lorem ipsum";
 }
 
 TextBox.prototype.editorView = function editorView() {
