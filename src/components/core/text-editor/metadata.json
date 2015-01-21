@@ -1,0 +1,7 @@
+{
+  "description":"Append textbox to content",
+  "label": "Textbox",
+  "icon" : "icon.png",
+  "external_scripts" : ["lib/raptor/raptor.js"],
+  "external_css" : ["lib/raptor/raptor-front-end.min.css"]
+}

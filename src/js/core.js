@@ -44,8 +44,30 @@ Core.prototype.load_components = function load_components() {
           Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].push(objeto);
         })
         .html(that.calcule_button_content(componentpath, description)));
+      that.load_component_extra(componentpath, description);
     });
   });
+};
+
+Core.prototype.load_component_extra = function load_component_extra(pluginpath,infobutton) {
+  var head = document.getElementsByTagName('head')[0];
+  if (infobutton.hasOwnProperty('external_css')) {
+      infobutton['external_css'].forEach(function(csspath){
+      var css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = pluginpath + csspath;
+      head.appendChild(css);
+    }); 
+  }
+  if (infobutton.hasOwnProperty('external_scripts')) {
+    infobutton['external_scripts'].forEach(function(scriptpath){
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = pluginpath + scriptpath;
+      head.appendChild(script);
+    });
+  }
+  
 };
 
 
@@ -69,6 +91,7 @@ Core.prototype.load_sections = function load_sections() {
   createNameSpace('Project.UI.Data.Sections');
   Project.UI.Data.Sections = [];
   var addsection = $(document.createElement('img'))
+                    .attr('id','addsection')
                     .attr('src', 'img/add.png')
                     .bind('click', that.add_section);
   $("#navsections").append(addsection);
@@ -83,6 +106,11 @@ Core.prototype.add_section = function add_section() {
                             .bind('click', function () {load_content(this); });
   $(this).before(section_thumbnail);
 };
+
+
+
+
+
 
 function load_content(thumbnail) {
 
