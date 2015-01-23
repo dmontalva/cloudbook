@@ -15,14 +15,14 @@ Core.prototype.loadComponents = function loadComponents() {
   var that = this;
   var sections = Util.readOnlyDirectories('./components');
   sections.forEach(function (section) {
-    var actions = Util.readOnlyDirectories(section);
+    var actions = Util.readOnlyDirectories('./components/'+section);
     actions.forEach(function (action) {
       var auxnamespace = 'Project.Actions.' + section + '.' + action;
-      var componentpath = './components/' + section + '/' + action + '/';
+      var auxpathcomponent = './components/'+section+'/'+action + '/';
       Util.createNameSpace(auxnamespace);
-      Project.Actions[section][action] = require(action + '/' + 'core.js');
-      var description = require(componentpath + 'metadata.json');
-      that.loadComponentExtraScripts(componentpath, description);
+      Project.Actions[section][action] = require( auxpathcomponent + 'core.js');
+      var description = require(auxpathcomponent + '/metadata.json');
+      that.loadComponentExtraScripts(auxpathcomponent + , description);
     });
   });
 };
@@ -52,11 +52,13 @@ Core.prototype.renderActionsButtons = function renderActionsButtons(){
 
 
 Core.prototype.loadComponentExtraScripts = function loadComponentExtraScripts(pluginpath,infobutton) {
+  var fs = require('fs');
+  var path = require('path');
   if (infobutton.hasOwnProperty('external_scripts')) {
       var fs = require('fs');
       var path = require('path');
       infobutton['external_scripts'].forEach(function(scriptpath){
-        var script = fs.readfileSync(path.join(pluginpath,scriptpath));
+        var script = fs.readFileSync(path.join(pluginpath,scriptpath));
         eval(script);
       });
   } 
