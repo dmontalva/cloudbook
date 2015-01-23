@@ -1,55 +1,68 @@
-
-function createNameSpace(nameSpaceString) {
-  var names = nameSpaceString.split("."),
-    parent = window,
-    imax = names.length,
-    i;
-
-  //if any nameSpace level doesn't exist, create it
-  for (i = 0; i < imax; i++) {
-    if (!parent[names[i]]) {
-      parent[names[i]] = {};
-    }
-    parent = parent[names[i]];
-  }
-}
-
+/**
+ * Author : Raul Rodrigo Segura <raurodse@gmail.com>
+ */
 
 function Core() {
-  createNameSpace('Project');
-  createNameSpace('Project.Actions');
+
+  Util.createNameSpace('Project');
+  Util.createNameSpace('Project.Actions');
+  Util.createNameSpace('Project.UI');
+  Project.UI.targetcontent = '#targetcontent';
+
 }
 
-
-Core.prototype.load_components = function load_components() {
+Core.prototype.loadComponents = function loadComponents() {
   var that = this;
-  var fs = require('fs');
-  var sections = fs.readdirSync('components');
+  var sections = Util.readOnlyDirectories('./components');
   sections.forEach(function (section) {
-    var actions = fs.readdirSync('components/' + section);
+    var actions = Util.readOnlyDirectories(section);
     actions.forEach(function (action) {
       var auxnamespace = 'Project.Actions.' + section + '.' + action;
       var componentpath = './components/' + section + '/' + action + '/';
-      createNameSpace(auxnamespace);
-      Project.Actions[section][action] = require('./components/' + section + '/' + action + '/' + 'core.js');
+      Util.createNameSpace(auxnamespace);
+      Project.Actions[section][action] = require(action + '/' + 'core.js');
       var description = require(componentpath + 'metadata.json');
-      $('#navactions').append($(document.createElement('button'))
-        //.bind('click', function () {Project.Actions[section][action].add(load_element); })
-        .bind('click', function () {
-          var objeto = Project.Actions[section][action].add();
-          var representacion = objeto.editorView();
-          representacion.addClass('draggable').css('position','relative');
-          $(Project.UI.targetcontent).append(representacion);
-          load_element(objeto);
-          Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].push(objeto);
-        })
-        .html(that.calcule_button_content(componentpath, description)));
-      that.load_component_extra(componentpath, description);
+      that.loadComponentExtraScripts(componentpath, description);
     });
   });
 };
 
-Core.prototype.load_component_extra = function load_component_extra(pluginpath,infobutton) {
+Core.prototype.renderActionsButtons = function renderActionsButtons(){
+    var that = this;
+    Object.keys(Project.Actions).forEach(function (section) {
+      Object.keys(Project.Actions[section]).forEach(function (action){
+
+        var componentpath = './components/' + section + '/' + action + '/';
+        var description = require(componentpath + 'metadata.json');
+
+        that.loadComponentExtraCss(componentpath,description);
+        $('#navactions').append($(document.createElement('button'))
+          .bind('click', function () {
+            var objeto = Project.Actions[section][action].add();
+            var representacion = objeto.editorView();
+            representacion.addClass('draggable').css('position','relative');
+            $(Project.UI.targetcontent).append(representacion);
+            loadElement(objeto);
+            Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].push(objeto);
+          })
+          .html(that.calculeButtonContent(componentpath, description)));        
+      });
+    })
+}
+
+
+Core.prototype.loadComponentExtraScripts = function loadComponentExtraScripts(pluginpath,infobutton) {
+  if (infobutton.hasOwnProperty('external_scripts')) {
+      var fs = require('fs');
+      var path = require('path');
+      infobutton['external_scripts'].forEach(function(scriptpath){
+        var script = fs.readfileSync(path.join(pluginpath,scriptpath));
+        eval(script);
+      });
+  } 
+};
+
+Core.prototype.loadComponentExtraCss = function loadComponentExtraCss(pluginpath, infobutton){
   var head = document.getElementsByTagName('head')[0];
   if (infobutton.hasOwnProperty('external_css')) {
       infobutton['external_css'].forEach(function(csspath){
@@ -59,19 +72,9 @@ Core.prototype.load_component_extra = function load_component_extra(pluginpath,i
       head.appendChild(css);
     }); 
   }
-/*  if (infobutton.hasOwnProperty('external_scripts')) {
-    infobutton['external_scripts'].forEach(function(scriptpath){
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = pluginpath + scriptpath;
-      head.appendChild(script);
-    });
-  } 
-  */
-};
+}
 
-
-Core.prototype.calcule_button_content = function calcule_button_content(pluginpath, infobutton) {
+Core.prototype.calculeButtonContent = function calculeButtonContent(pluginpath, infobutton) {
   var result = "";
   var fs = require('fs');
   if (infobutton.hasOwnProperty('icon')) {
@@ -86,25 +89,25 @@ Core.prototype.calcule_button_content = function calcule_button_content(pluginpa
   return result;
 };
 
-Core.prototype.load_sections = function load_sections() {
+Core.prototype.loadSections = function loadSections() {
   var that = this;
-  createNameSpace('Project.UI.Data.Sections');
+  Util.createNameSpace('Project.UI.Data.Sections');
   Project.UI.Data.Sections = [];
   var addsection = $(document.createElement('img'))
                     .attr('id','addsection')
                     .attr('src', 'img/add.png')
-                    .bind('click', that.add_section);
+                    .bind('click', that.addSection);
   $("#navsections").append(addsection);
 };
 
-Core.prototype.add_section = function add_section() {
+Core.prototype.addSection = function addSection() {
   var section = [];
   Project.UI.Data.Sections.push(section);
-  var section_thumbnail = $(document.createElement('img'))
+  var sectionthumbnail = $(document.createElement('img'))
                             .attr('src', 'img/white.png')
                             .attr('id', Project.UI.Data.Sections.length)
-                            .bind('click', function () {load_content(this); });
-  $(this).before(section_thumbnail);
+                            .bind('click', function () {loadContent(this); });
+  $(this).before(sectionthumbnail);
 };
 
 
@@ -112,7 +115,8 @@ Core.prototype.add_section = function add_section() {
 
 
 
-function load_content(thumbnail) {
+
+function loadContent(thumbnail) {
 
   if (Project.UI.selected !== undefined){
     Project.UI.selected.removeClass('sectionselected');
@@ -124,17 +128,21 @@ function load_content(thumbnail) {
     Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].forEach(function (element){
       $(Project.UI.targetcontent).append(element.editorView().addClass('draggable').css('position','relative'));
     });
-    
   }
   $(thumbnail).addClass('sectionselected');
-
 }
 
 
+
+/************************
+ *        Main          *
+ ************************/
+
+var core = new Core();
+core.loadComponents();
+
 $(document).ready(function () {
-  var core = new Core();
-  core.load_components();
-  core.load_sections();
-  createNameSpace('Project.UI');
-  Project.UI.targetcontent = '#targetcontent';
+
+  core.renderActionsButtons();
+  core.loadSections();
 });

@@ -1,18 +1,19 @@
 <html>
 	<head>
+		<!--Styles definition -->
 		<link rel="stylesheet" href="css/main.css">
 		
+		<!-- External common libs-->
 		<script type="text/javascript" src="js/lib/jquery-1.11.2.min.js"></script>
 		<script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+
+		<!-- Internal utils libs -->
+		<script type="text/javascript" src="js/util.js"></script>
+
+		<script type="text/javascript" src="js/core.js"></script>
+		
+		<!-- Create Menu -->
 		<script type="text/javascript" src="js/menu.js"></script>
-		<script type="text/javascript">
-			var fs = require('fs');
-			var text = fs.readFileSync('./components/core/text-editor/lib/raptor/raptor.js');
-			eval(text);
-			// Leer el fichero y hacer un eval a ver si suena la flauta
-		 //script.src = '.components/core/text-editor/lib/raptor/raptor.js';
-		// $('head').append(script);
-		</script>
 	</head>
 	<body>
 		<div id="menu">
@@ -23,7 +24,7 @@
 		</div>
 		<div id="targetcontent"></div>
 
-		<script type="text/javascript" src="js/core.js"></script>
+		
 		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="components/core/text-editor/lib/raptor/raptor.js"></script>
 	</body>

@@ -23,10 +23,13 @@ TextBox.prototype.save = function save() {
   return {'type':'TextBox','position':this.position,'text':this.text};
 };
 
-exports.add = function add(){
+function add (){
   var x = new TextBox();
   return x;
 }
+
+
+exports.add = add;
 
 /*
 exports.add = function add(callback) {
