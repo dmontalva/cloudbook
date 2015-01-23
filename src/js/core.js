@@ -59,15 +59,15 @@ Core.prototype.load_component_extra = function load_component_extra(pluginpath,i
       head.appendChild(css);
     }); 
   }
-  if (infobutton.hasOwnProperty('external_scripts')) {
+/*  if (infobutton.hasOwnProperty('external_scripts')) {
     infobutton['external_scripts'].forEach(function(scriptpath){
       var script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = pluginpath + scriptpath;
       head.appendChild(script);
     });
-  }
-  
+  } 
+  */
 };
 
 
