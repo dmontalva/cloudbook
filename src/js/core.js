@@ -22,7 +22,7 @@ Core.prototype.loadComponents = function loadComponents() {
       Util.createNameSpace(auxnamespace);
       Project.Actions[section][action] = require( auxpathcomponent + 'core.js');
       var description = require(auxpathcomponent + '/metadata.json');
-      that.loadComponentExtraScripts(auxpathcomponent + , description);
+      that.loadComponentExtraScripts(auxpathcomponent , description);
     });
   });
 };
