@@ -4,22 +4,22 @@
 
 function Core() {
 
-  Util.createNameSpace('Project');
-  Util.createNameSpace('Project.Actions');
-  Util.createNameSpace('Project.UI');
+  CBUtil.createNameSpace('Project');
+  CBUtil.createNameSpace('Project.Actions');
+  CBUtil.createNameSpace('Project.UI');
   Project.UI.targetcontent = '#targetcontent';
 
 }
 
 Core.prototype.loadComponents = function loadComponents() {
   var that = this;
-  var sections = Util.readOnlyDirectories('./components');
+  var sections = CBUtil.readOnlyDirectories('./components');
   sections.forEach(function (section) {
-    var actions = Util.readOnlyDirectories('./components/'+section);
+    var actions = CBUtil.readOnlyDirectories('./components/'+section);
     actions.forEach(function (action) {
       var auxnamespace = 'Project.Actions.' + section + '.' + action;
       var auxpathcomponent = './components/'+section+'/'+action + '/';
-      Util.createNameSpace(auxnamespace);
+      CBUtil.createNameSpace(auxnamespace);
       Project.Actions[section][action] = require( auxpathcomponent + 'core.js');
       var description = require(auxpathcomponent + '/metadata.json');
       that.loadComponentExtraScripts(auxpathcomponent , description);
@@ -93,7 +93,7 @@ Core.prototype.calculeButtonContent = function calculeButtonContent(pluginpath, 
 
 Core.prototype.loadSections = function loadSections() {
   var that = this;
-  Util.createNameSpace('Project.UI.Data.Sections');
+  CBUtil.createNameSpace('Project.UI.Data.Sections');
   Project.UI.Data.Sections = [];
   var addsection = $(document.createElement('img'))
                     .attr('id','addsection')

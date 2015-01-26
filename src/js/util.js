@@ -28,4 +28,4 @@ Util.prototype.readOnlyDirectories = function readOnlyDirectories(directorypath)
 	return listfolders;
 };
 
-Util = new Util();
+CBUtil = new Util();
