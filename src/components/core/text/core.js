@@ -1,47 +1,29 @@
 var Project = window.Project;  
 var $ = require('jquery');
-
+var util = require('util');
+var CBobject = require('cbobject');
 
 function TextBox(){
-  this.position = [100,100];
+  TextBox.super_.call(this,[200,200],'TextBox');
   this.text = "Lorem ipsum";
 }
 
+util.inherits(TextBox,CBobject);
+
 TextBox.prototype.editorView = function editorView() {
-  var aux = $(window.document.createElement('div')).html(this.text);
-  aux.css('left', this.position[0]);
-  aux.css('top', this.position[1]);
-  aux.addClass('draggable');
-  aux.dblclick(function (event) {
-    $(this).css('border', '2px solid black');
-    $(this).css('display', 'inline-block');
-  });
+  var aux = TextBox.super_.prototype.editorView.call(this);
+  aux.html(this.text);
   return aux;
 };
 
+
 TextBox.prototype.save = function save() {
-  return {'type':'TextBox','position':this.position,'text':this.text};
+  var result = TextBox.super_.prototype.save.call(this);
+  result['text'] = this.text;
+  return result;
 };
 
 exports.add = function add(){
   var x = new TextBox();
   return x;
 }
-
-/*
-exports.add = function add(callback) {
-
-  
-  var aux = $(window.document.createElement('div')).html('Mola');
-  aux.css('position', 'relative');
-  aux.css('top', 100);
-  aux.css('left', 100);
-  aux.addClass('draggable');
-  aux.dblclick(function (event) {
-    $(this).css('border', '2px solid black');
-    $(this).css('display', 'inline-block');
-  });
-  $(Project.UI.targetcontent).append(aux);
-  callback(aux);
-};
-*/
