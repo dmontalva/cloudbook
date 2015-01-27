@@ -1,0 +1,44 @@
+{
+ "name": "Nombre temporal",
+ "author": "Usuario 1 <micorreo@midominio.com>",
+ "data": {
+  "sections": [
+   [
+    {
+     "type": "core.text-editor",
+     "position": [
+      410,
+      109
+     ],
+     "text": "Lorem ipsum"
+    },
+    {
+     "type": "core.text",
+     "position": [
+      133,
+      335
+     ],
+     "text": "Lorem ipsum"
+    }
+   ],
+   [
+    {
+     "type": "core.text",
+     "position": [
+      119,
+      105
+     ],
+     "text": "Lorem ipsum"
+    },
+    {
+     "type": "core.images",
+     "position": [
+      364,
+      139
+     ],
+     "imgpath": "./img/1.png"
+    }
+   ]
+  ]
+ }
+}
