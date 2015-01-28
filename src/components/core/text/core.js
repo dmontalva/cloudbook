@@ -3,9 +3,11 @@ var $ = require('jquery');
 var util = require('util');
 var CBobject = require('cbobject');
 
-function TextBox(){
-  TextBox.super_.call(this,[200,200],'TextBox');
-  this.text = "Lorem ipsum";
+
+function TextBox(objectdata){
+  objectdata = typeof objectdata !== 'undefined' ? objectdata : {"text":"Lorem ipsum", "position" : [200,200]};
+  TextBox.super_.call(this,objectdata.position,'core.text');
+  this.text = objectdata.text;
 }
 
 util.inherits(TextBox,CBobject);
@@ -24,6 +26,9 @@ TextBox.prototype.save = function save() {
 };
 
 exports.add = function add(){
-  var x = new TextBox();
-  return x;
+  return new TextBox();
+}
+
+exports.restore = function restore(objectdata){
+  return new TextBox(objectdata);
 }

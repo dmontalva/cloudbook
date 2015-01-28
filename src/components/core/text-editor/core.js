@@ -1,31 +1,37 @@
 var Project = window.Project;  
 var $ = require('jquery');
+var util = require('util');
+var CBobject = require('cbobject');
+var metadata = require('./metadata.json');
 
-
-function TextBox(){
-  this.position = [100,100];
-  this.text = "Lorem ipsum";
+function TextBoxEditor(objectdata){
+  objectdata = typeof objectdata !== 'undefined' ? objectdata : {"text":"Lorem ipsum", "position" : [200,200]};
+  TextBoxEditor.super_.call(this,objectdata.position,metadata['namespace']);
+  this.text = objectdata.text;
 }
 
-TextBox.prototype.editorView = function editorView() {
-  var aux = $(window.document.createElement('div')).html(this.text);
-  aux.css('left', this.position[0]);
-  aux.css('top', this.position[1]);
+util.inherits(TextBoxEditor,CBobject);
+
+TextBoxEditor.prototype.editorView = function editorView() {
+  var aux = TextBoxEditor.super_.prototype.editorView.call(this);
+  aux.html(this.text);
   aux.addClass('raptor');
-  aux.dblclick(function (event) {
-    $(this).css('border', '2px solid black');
-    $(this).css('display', 'inline-block');
-  });
   return aux;
 };
 
-TextBox.prototype.save = function save() {
-  return {'type':'TextBox','position':this.position,'text':this.text};
+TextBoxEditor.prototype.save = function save() {
+  var result = TextBoxEditor.super_.prototype.save.call(this);
+  result['text'] = this.text;
+  return result;
 };
 
 function add (){
-  var x = new TextBox();
-  return x;
+  return new TextBoxEditor();
+}
+
+function restore (objectdata){
+  return new TextBoxEditor(objectdata);
 }
 
 exports.add = add;
+exports.restore = restore;

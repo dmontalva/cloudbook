@@ -1,19 +1,37 @@
 var Project = window.Project;
 var $ = require('jquery');
+var util = require('util');
+var CBobject = require('cbobject');
 
-exports.add = function add(callback) {
+function ImageBox(objectdata){
+  objectdata = typeof objectdata !== 'undefined' ? objectdata : {"imgpath":"./img/1.png", "position" : [200,200]};
+  ImageBox.super_.call(this,objectdata.position,'core.images');
+  this.imgpath = objectdata.imgpath;
+}
 
-  var aux = $(window.document.createElement('img')).attr('src', './img/1.png');
-  aux.css('position', 'relative');
-  aux.css('top', 100);
-  aux.css('left', 100);
-  aux.css('height','100px');
-  aux.css('width','auto');
-  aux.addClass('draggable');
-  aux.dblclick(function (event) {
-    $(this).css('border', '2px solid black');
-    $(this).css('display', 'inline-block');
-  });
-  $(Project.UI.targetcontent).append(aux);
-  callback();
+util.inherits(ImageBox,CBobject);
+
+ImageBox.prototype.editorView = function editorView() {
+  var aux = ImageBox.super_.prototype.editorView.call(this);
+  var imgelement = $(window.document.createElement('img')).attr('src', this.imgpath);
+  imgelement.css('height','100px');
+  imgelement.css('width','auto');
+  aux.append(imgelement);
+  return aux;
+};
+
+
+ImageBox.prototype.save = function save() {
+  var result = ImageBox.super_.prototype.save.call(this);
+  result['imgpath'] = this.imgpath;
+  return result;
+};
+
+
+exports.add = function add() {
+  return new ImageBox();
+};
+
+exports.restore = function restore(objectdata) {
+  return new ImageBox(objectdata);
 };

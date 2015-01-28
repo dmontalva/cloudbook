@@ -6,8 +6,11 @@ var menubar = new gui.Menu({
     type: 'menubar'
   });
 
-var file = new gui.Menu();
-file.append(new gui.MenuItem({
+/**
+ * Actions for menu
+ */
+
+var save_project = {
   label: 'Save Project',
   click: function () {
     var fs = require('fs');
@@ -17,17 +20,38 @@ file.append(new gui.MenuItem({
     objectProject['data'] = {};
     objectProject['data']['sections'] = [];
     Project.UI.Data.Sections.forEach(function (section){
-    	var aux = [];
-    	section.forEach(function (cbobject){
-    		aux.push(cbobject.save());
-    	});
-    	objectProject['data']['sections'].push(aux);
+      var aux = [];
+      section.forEach(function (cbobject){
+        aux.push(cbobject.save());
+      });
+      objectProject['data']['sections'].push(aux);
     });
     var result_string = JSON.stringify(objectProject,null," ");
     fs.writeFile('/tmp/.cloudbook_temp',result_string);
 
   }
-}));
+};
+
+var load_project = {
+  label: 'Load Project',
+  click: function () {
+    var pathelement = $(document.createElement('input')).attr('type','file');
+    pathelement.change(function(evt) {
+          core.loadProject($(this).val());
+        });
+    pathelement.trigger('click');
+  }
+};
+
+
+
+
+
+
+
+var file = new gui.Menu();
+file.append(new gui.MenuItem(load_project));
+file.append(new gui.MenuItem(save_project));
 
 file.append(new gui.MenuItem({
   label: 'Quit',

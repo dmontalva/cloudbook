@@ -17,11 +17,13 @@ Core.prototype.loadComponents = function loadComponents() {
   sections.forEach(function (section) {
     var actions = CBUtil.readOnlyDirectories('./components/'+section);
     actions.forEach(function (action) {
-      var auxnamespace = 'Project.Actions.' + section + '.' + action;
+      
       var auxpathcomponent = './components/'+section+'/'+action + '/';
+      var description = require(auxpathcomponent + '/metadata.json');
+      var auxnamespace = 'Project.Actions.' + description['namespace'];
       CBUtil.createNameSpace(auxnamespace);
       Project.Actions[section][action] = require( auxpathcomponent + 'core.js');
-      var description = require(auxpathcomponent + '/metadata.json');
+      
       that.loadComponentExtraScripts(auxpathcomponent , description);
     });
   });
@@ -99,12 +101,11 @@ Core.prototype.loadSections = function loadSections() {
                     .attr('id','addsection')
                     .attr('src', 'img/add.png')
                     .bind('click', that.addSection);
-  $("#navsections").append(addsection);
+  $("#navsections").html(addsection);
 };
 
 Core.prototype.addSection = function addSection() {
-  var section = [];
-  Project.UI.Data.Sections.push(section);
+  Project.UI.Data.Sections.push([]);
   var sectionthumbnail = $(document.createElement('img'))
                             .attr('src', 'img/white.png')
                             .attr('id', Project.UI.Data.Sections.length)
@@ -112,10 +113,26 @@ Core.prototype.addSection = function addSection() {
   $(this).before(sectionthumbnail);
 };
 
+Core.prototype.loadProject = function(projectPath) {
+  var fs = require('fs');
+  if (fs.existsSync(projectPath)){
+    var projectdata = require(projectPath);
+    this.voidProject();
+    projectdata.data.sections.forEach(function(section){
+      var tempsection = [];
+      section.forEach(function(element){
+        tempsection.push(CBUtil.getObjectFromString('Project.Actions.' + element['namespace']).restore(element));
+      });
+      Project.UI.Data.Sections.push(tempsection);
+    });
+  }
+  
+};
 
 
-
-
+Core.prototype.voidProject = function() {
+  this.loadSections();
+};
 
 
 function loadContent(thumbnail) {
@@ -147,4 +164,11 @@ $(document).ready(function () {
 
   core.renderActionsButtons();
   core.loadSections();
+
+  /**
+   * Create initial page and select this
+   */
+  $('#addsection').click();
+  $('#addsection').prev().click();
+
 });

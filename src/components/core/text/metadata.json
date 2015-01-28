@@ -1,4 +1,5 @@
 {
+	"namespace":"core.text",
 	"description":"Append textbox to content",
 	"label": "Textbox",
 	"icon" : "icon.png"

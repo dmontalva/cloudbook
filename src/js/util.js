@@ -28,4 +28,13 @@ Util.prototype.readOnlyDirectories = function readOnlyDirectories(directorypath)
 	return listfolders;
 };
 
+Util.prototype.getObjectFromString = function(namespace) {
+        var x = namespace.split('.');
+        var auxobj = window;
+        for(i=0;i<x.length;i++){
+                auxobj = auxobj[x[i]];
+        }
+        return auxobj;
+};
+
 CBUtil = new Util();
