@@ -2,7 +2,7 @@ var fs = require("fs");
 
 function loadElement(relativeobject){
             $(function() {
-                $( ".draggable" ).draggable({stop: function (event,ui){console.log(ui); relativeobject.position = [ui.position.left,ui.position.top];}});
+                $( ".draggable" ).draggable({stop: function (event,ui){relativeobject.position = [ui.position.left,ui.position.top];}});
                 $( ".raptor" ).raptor({});
             });
 }

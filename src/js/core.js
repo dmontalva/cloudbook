@@ -109,19 +109,20 @@ Core.prototype.addSection = function addSection() {
   var sectionthumbnail = $(document.createElement('img'))
                             .attr('src', 'img/white.png')
                             .attr('id', Project.UI.Data.Sections.length)
-                            .bind('click', function () {loadContent(this); });
+                            .bind('click', function () {loadThumbnailSelected(this); });
   $(this).before(sectionthumbnail);
 };
 
 Core.prototype.loadProject = function(projectPath) {
   var fs = require('fs');
   if (fs.existsSync(projectPath)){
+
     var projectdata = require(projectPath);
     this.voidProject();
     projectdata.data.sections.forEach(function(section){
       var tempsection = [];
       section.forEach(function(element){
-        tempsection.push(CBUtil.getObjectFromString('Project.Actions.' + element['namespace']).restore(element));
+        tempsection.push(CBUtil.getObjectFromString('Project.Actions.' + element['type']).restore(element));
       });
       Project.UI.Data.Sections.push(tempsection);
     });
@@ -135,20 +136,27 @@ Core.prototype.voidProject = function() {
 };
 
 
-function loadContent(thumbnail) {
+function loadThumbnailSelected(thumbnail) {
 
   if (Project.UI.selected !== undefined){
     Project.UI.selected.removeClass('sectionselected');
   } 
   // Load content into targetcontent
-  $(Project.UI.targetcontent).html("");
+  
   Project.UI.selected = $(thumbnail);
-  if (Project.UI.Data.Sections[Project.UI.selected.attr('id')-1] !== undefined ){
-    Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].forEach(function (element){
-      $(Project.UI.targetcontent).append(element.editorView().addClass('draggable').css('position','relative'));
+  loadContent(Project.UI.selected.attr('id')-1);
+  $(thumbnail).addClass('sectionselected');
+}
+
+function loadContent(id){
+  $(Project.UI.targetcontent).html("");
+  if (Project.UI.Data.Sections[id] !== undefined ){
+    Project.UI.Data.Sections[id].forEach(function (element){
+      var x = element.editorView();
+      $(Project.UI.targetcontent).append(x);
+      loadElement(x);
     });
   }
-  $(thumbnail).addClass('sectionselected');
 }
 
 
