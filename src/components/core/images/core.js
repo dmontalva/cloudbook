@@ -20,14 +20,6 @@ ImageBox.prototype.editorView = function editorView() {
   return aux;
 };
 
-
-ImageBox.prototype.save = function save() {
-  var result = ImageBox.super_.prototype.save.call(this);
-  result['imgpath'] = this.imgpath;
-  return result;
-};
-
-
 exports.add = function add() {
   return new ImageBox();
 };

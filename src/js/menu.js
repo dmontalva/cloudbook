@@ -18,14 +18,7 @@ var save_project = {
     objectProject['name'] = "Nombre temporal";
     objectProject['author'] = "Usuario 1 <micorreo@midominio.com>";
     objectProject['data'] = {};
-    objectProject['data']['sections'] = [];
-    Project.UI.Data.Sections.forEach(function (section){
-      var aux = [];
-      section.forEach(function (cbobject){
-        aux.push(cbobject.save());
-      });
-      objectProject['data']['sections'].push(aux);
-    });
+    objectProject['data']['sections'] = Project.UI.Data.Sections;
     var result_string = JSON.stringify(objectProject,null," ");
     fs.writeFile('/tmp/.cloudbook_temp',result_string);
 

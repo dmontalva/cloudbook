@@ -19,12 +19,6 @@ TextBoxEditor.prototype.editorView = function editorView() {
   return aux;
 };
 
-TextBoxEditor.prototype.save = function save() {
-  var result = TextBoxEditor.super_.prototype.save.call(this);
-  result['text'] = this.text;
-  return result;
-};
-
 function add (){
   return new TextBoxEditor();
 }

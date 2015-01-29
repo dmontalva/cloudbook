@@ -18,13 +18,6 @@ TextBox.prototype.editorView = function editorView() {
   return aux;
 };
 
-
-TextBox.prototype.save = function save() {
-  var result = TextBox.super_.prototype.save.call(this);
-  result['text'] = this.text;
-  return result;
-};
-
 exports.add = function add(){
   return new TextBox();
 }
