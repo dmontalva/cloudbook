@@ -7,6 +7,7 @@ function Core() {
   CBUtil.createNameSpace('Project');
   CBUtil.createNameSpace('Project.Actions');
   CBUtil.createNameSpace('Project.UI');
+  CBUtil.createNameSpace('Project.UI.Data.Info');
   Project.UI.targetcontent = '#targetcontent';
 
 }
@@ -60,7 +61,7 @@ Core.prototype.loadComponentExtraScripts = function loadComponentExtraScripts(pl
       var fs = require('fs');
       var path = require('path');
       infobutton['external_scripts'].forEach(function(scriptpath){
-        var script = fs.readFileSync(path.join(pluginpath,scriptpath));
+        var script = fs.readFileSync(path.join(pluginpath,scriptpath),'utf8');
         eval(script);
       });
   } 
@@ -119,6 +120,7 @@ Core.prototype.loadProject = function(projectPath) {
 
     var projectdata = require(projectPath);
     this.voidProject();
+    Project.UI.Data.Info.projectname = projectPath;
     projectdata.data.sections.forEach(function(section){
       var tempsection = [];
       section.forEach(function(element){
@@ -130,6 +132,17 @@ Core.prototype.loadProject = function(projectPath) {
   
 };
 
+
+Core.prototype.saveProject = function(projectPath) {
+  var fs = require('fs');
+    var objectProject = {};
+    objectProject['name'] = "Nombre temporal";
+    objectProject['author'] = "Usuario 1 <micorreo@midominio.com>";
+    objectProject['data'] = {};
+    objectProject['data']['sections'] = Project.UI.Data.Sections;
+    var result_string = JSON.stringify(objectProject,null," ");
+    fs.writeFile(projectPath,result_string);
+};
 
 Core.prototype.voidProject = function() {
   this.loadSections();

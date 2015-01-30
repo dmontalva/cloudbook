@@ -10,20 +10,34 @@ var menubar = new gui.Menu({
  * Actions for menu
  */
 
+function saveAs() {
+    var pathelement = $(document.createElement('input')).attr('type','file').attr('nwsaveas','');
+    pathelement.change(function(evt) {
+          CBUtil.createNameSpace('Project.UI.Data.Info');
+          Project.UI.Data.Info.projectname = $(this).val();
+          core.saveProject($(this).val());
+        });
+    pathelement.trigger('click');
+  }
+
+
 var save_project = {
   label: 'Save Project',
   click: function () {
-    var fs = require('fs');
-    var objectProject = {};
-    objectProject['name'] = "Nombre temporal";
-    objectProject['author'] = "Usuario 1 <micorreo@midominio.com>";
-    objectProject['data'] = {};
-    objectProject['data']['sections'] = Project.UI.Data.Sections;
-    var result_string = JSON.stringify(objectProject,null," ");
-    fs.writeFile('/tmp/.cloudbook_temp',result_string);
-
+    if ( Project.UI.Data.Info.hasOwnProperty('projectname')){
+      core.saveProject(Project.UI.Data.Info.projectname);
+    }
+    else{
+      saveAs();
+    }
   }
 };
+
+var save_as_project = {
+  label: 'Save Project as ...',
+  click: saveAs
+};
+
 
 var load_project = {
   label: 'Load Project',
@@ -42,8 +56,10 @@ var load_project = {
 
 
 
+
 var file = new gui.Menu();
 file.append(new gui.MenuItem(load_project));
+file.append(new gui.MenuItem(save_as_project));
 file.append(new gui.MenuItem(save_project));
 
 file.append(new gui.MenuItem({

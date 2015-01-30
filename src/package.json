@@ -6,8 +6,8 @@
   "keywords": [ "demo", "node-webkit" ],
   "window": {
     "title": "node-webkit demo",
-    "icon": "link.png",
-    "toolbar": true,
+    "icon": "logo.png",
+    "toolbar": false,
     "frame": true,
     "width": 1024,
     "height": 768,
