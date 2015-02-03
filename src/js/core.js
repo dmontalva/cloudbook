@@ -41,12 +41,12 @@ Core.prototype.renderActionsButtons = function renderActionsButtons(){
         that.loadComponentExtraCss(componentpath,description);
         $('#navactions').append($(document.createElement('button'))
           .bind('click', function () {
-            var objeto = Project.Actions[section][action].add();
-            var representacion = objeto.editorView();
-            representacion.addClass('draggable').css('position','relative');
-            $(Project.UI.targetcontent).append(representacion);
-            loadElement(objeto);
-            Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].push(objeto);
+            var fullobject = new Project.Actions[section][action]();
+            var viewobject = $(fullobject.editorView());
+            $(Project.UI.targetcontent).append(viewobject);
+            eval('function x(jquerycbo,objectcbo){'+ Project.Actions[section][action].add_callback + '}; x(fullobject,viewobject); ');
+            //loadElement(viewobject,fullobject);
+            Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].push(fullobject);
           })
           .html(that.calculeButtonContent(componentpath, description)));        
       });
@@ -94,7 +94,7 @@ Core.prototype.calculeButtonContent = function calculeButtonContent(pluginpath, 
   return result;
 };
 
-Core.prototype.loadSections = function loadSections() {
+Core.prototype.initSections = function initSections() {
   var that = this;
   CBUtil.createNameSpace('Project.UI.Data.Sections');
   Project.UI.Data.Sections = [];
@@ -111,6 +111,7 @@ Core.prototype.addSection = function addSection() {
                             .attr('src', 'img/white.png')
                             .attr('id', Project.UI.Data.Sections.length)
                             .bind('click', function () {loadThumbnailSelected(this); });
+                            
   $(this).before(sectionthumbnail);
 };
 
@@ -145,7 +146,7 @@ Core.prototype.saveProject = function(projectPath) {
 };
 
 Core.prototype.voidProject = function() {
-  this.loadSections();
+  this.initSections();
 };
 
 
@@ -178,18 +179,22 @@ function loadContent(id){
  *        Main          *
  ************************/
 
+/*
+ * Core is created in this moment by loadComponent function. This function is responsible load extra libs on components.
+ * These libraries be load before 
+ */
 var core = new Core();
 core.loadComponents();
 
 $(document).ready(function () {
 
   core.renderActionsButtons();
-  core.loadSections();
+  core.initSections();
 
   /**
    * Create initial page and select this
    */
   $('#addsection').click();
   $('#addsection').prev().click();
-
 });
+

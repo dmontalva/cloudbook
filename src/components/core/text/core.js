@@ -18,6 +18,8 @@ TextBox.prototype.editorView = function editorView() {
   return aux;
 };
 
+TextBox.add_callback = 	CBobject.add_callback;
+/*
 exports.add = function add(){
   return new TextBox();
 }
@@ -25,3 +27,5 @@ exports.add = function add(){
 exports.restore = function restore(objectdata){
   return new TextBox(objectdata);
 }
+*/
+module.exports = TextBox;

@@ -20,6 +20,8 @@ ImageBox.prototype.editorView = function editorView() {
   return aux;
 };
 
+ImageBox.add_callback =  CBobject.add_callback;
+/*
 exports.add = function add() {
   return new ImageBox();
 };
@@ -27,3 +29,5 @@ exports.add = function add() {
 exports.restore = function restore(objectdata) {
   return new ImageBox(objectdata);
 };
+*/
+module.exports = ImageBox;

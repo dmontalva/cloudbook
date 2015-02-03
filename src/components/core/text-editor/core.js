@@ -19,6 +19,9 @@ TextBoxEditor.prototype.editorView = function editorView() {
   return aux;
 };
 
+TextBoxEditor.add_callback = CBobject.add_callback + '; $( ".raptor" ).raptor({});';
+
+/*
 function add (){
   return new TextBoxEditor();
 }
@@ -29,3 +32,5 @@ function restore (objectdata){
 
 exports.add = add;
 exports.restore = restore;
+*/
+module.exports = TextBoxEditor;
