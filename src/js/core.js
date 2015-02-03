@@ -44,7 +44,9 @@ Core.prototype.renderActionsButtons = function renderActionsButtons(){
             var fullobject = new Project.Actions[section][action]();
             var viewobject = $(fullobject.editorView());
             $(Project.UI.targetcontent).append(viewobject);
-            eval('function x(jquerycbo,objectcbo){'+ Project.Actions[section][action].add_callback + '}; x(fullobject,viewobject); ');
+            //eval('function _____x_____(jquerycbo,objectcbo){'+ Project.Actions[section][action].add_callback + '}; _____x_____(fullobject,viewobject); ');
+            add_callback = Function('jquerycbo','objectcbo',Project.Actions[section][action].add_callback);
+            add_callback(fullobject,viewobject);
             //loadElement(viewobject,fullobject);
             Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].push(fullobject);
           })
