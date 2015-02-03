@@ -9,7 +9,6 @@ function Core() {
   CBUtil.createNameSpace('Project.UI');
   CBUtil.createNameSpace('Project.UI.Data.Info');
   Project.UI.targetcontent = '#targetcontent';
-
 }
 
 Core.prototype.loadComponents = function loadComponents() {
@@ -46,7 +45,8 @@ Core.prototype.renderActionsButtons = function renderActionsButtons(){
             $(Project.UI.targetcontent).append(viewobject);
             //eval('function _____x_____(jquerycbo,objectcbo){'+ Project.Actions[section][action].add_callback + '}; _____x_____(fullobject,viewobject); ');
             add_callback = Function('jquerycbo','objectcbo',Project.Actions[section][action].add_callback);
-            add_callback(fullobject,viewobject);
+            add_callback(viewobject,fullobject);
+            
             //loadElement(viewobject,fullobject);
             Project.UI.Data.Sections[Project.UI.selected.attr('id')-1].push(fullobject);
           })
