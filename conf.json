@@ -1,0 +1,11 @@
+{
+	"source": {
+		"exclude": [ "src/components/core/text-editor/lib"]
+	},
+	"opts":{
+		"encoding" : "utf-8",
+		"recurse" : true,
+		"destination" : "./doc",
+		"package" : "src/package.json"
+	}
+}
