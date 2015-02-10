@@ -21,3 +21,7 @@ Command nw is node-webkit launcher.
 ```sh
 nw cloudbook/src
 ```
+
+## Update doc ##
+You need jsdoc (npm install -g jsdoc)
+jsdoc src -c conf.json 
