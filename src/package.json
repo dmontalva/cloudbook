@@ -1,11 +1,11 @@
 {
   "main": "index.html",
-  "name": "nw-demo",
-  "description": "demo app of node-webkit",
+  "name": "CloudBook",
+  "description": "Graphical editor book",
   "version": "0.1.0",
-  "keywords": [ "demo", "node-webkit" ],
+  "keywords": [ "editor", "book","resources" ],
   "window": {
-    "title": "node-webkit demo",
+    "title": "CloudBook",
     "icon": "logo.png",
     "toolbar": false,
     "frame": true,
