@@ -19,8 +19,27 @@ TextBoxEditor.prototype.editorView = function editorView() {
   return aux;
 };
 
-TextBoxEditor.add_callback = CBobject.add_callback + '; $( ".raptor" ).raptor({});';
-
+TextBoxEditor.add_callback = CBobject.add_callback + '; $( ".raptor" ).raptor({  \
+															plugins:{ \
+																	insertFile: false, \
+																	languageMenu: false, \
+																	clearFormatting: false, \
+																	textSub: false, \
+																	textSuper: false, \
+																	guides: false, \
+																	floatLeft: false, \
+																	floatNone: false, \
+																	floatRight: false, \
+																	logo: false, \
+																	dockToElement: true, \
+																	dockToScreen: false, \
+																	snippetMenu: false, \
+																	specialCharacters: false, \
+																	embed: false, \
+																	classMenu: false, \
+																	statistics: false \
+																} \
+															});';
 /*
 function add (){
   return new TextBoxEditor();
