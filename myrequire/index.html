@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<script src="mifuncion.js"></script>
+		<script>
+			var fs = require('fs');
+			function mirequire(nombredefichero){
+				var mod = {};
+				miclase = fs.readFileSync(nombredefichero,'utf-8');
+				var z = new Function('mod',miclase);
+				z(mod);
+				return mod.exports;
+			}
+		</script>
+	</head>
+	<body>
+		
+	</body>
+</html>
